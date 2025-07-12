@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 import os
 
 from crews.meeting_minutes_crew.meeting_crew import MeetingMinutesCrew
+from crews.gmailcrew.gmailcrew  import GmailCrew
 
 
 load_dotenv()
@@ -42,39 +43,35 @@ class MeetingMinutesFlow(Flow[MeetingMinutesState]):
 
     @listen(transcribe_meeting)
     def generate_meeting_minutes(self):
-        print("🧠 Generating meeting minutes using CrewAI...")
+        print("Generating Meeting Minutes")
 
         crew = MeetingMinutesCrew()
 
         inputs = {
             "transcript": self.state.transcript
         }
-        crew_output = crew.crew().kickoff(inputs)
-
-        # Extract plain result string from CrewOutput
-        result_string = crew_output.result
-
-        self.state.meeting_minutes = result_string
-
-        print("\n📄 Meeting Minutes:")
-        print(result_string[:1000] + "...\n")  # Print first 1000 characters
+        meeting_minutes = crew.crew().kickoff(inputs)
+        self.state.meeting_minutes = meeting_minutes
 
     @listen(generate_meeting_minutes)
-    def save_meeting_minutes(self):
-        print("💾 Saving meeting minutes to file...")
+    def create_draft_meeting_minutes(self):
+        print("Creating Draft Meeting Minutes")
 
-        output_path = Path(__file__).parent / "meeting_minutes.txt"
-        with open(output_path, "w", encoding="utf-8") as f:
-            f.write(self.state.meeting_minutes)
+        crew = GmailCrew()
 
-        print(f"✅ Saved to {output_path.absolute()}")
+        inputs = {
+            "body": self.state.meeting_minutes
+        }
+
+        draft_crew = crew.crew().kickoff(inputs)
+        print(f"Draft Crew: {draft_crew}")
 
 
 def kickoff():
-    flow = MeetingMinutesFlow()
-    flow.plot()
-    flow.kickoff()
-
+   
+    meeting_minutes_flow = MeetingMinutesFlow()
+    meeting_minutes_flow.plot()
+    meeting_minutes_flow.kickoff()
 
 if __name__ == "__main__":
     kickoff()
