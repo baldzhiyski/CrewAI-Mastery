@@ -4,7 +4,7 @@ import warnings
 
 from datetime import datetime
 
-from ai_latest_dev.crew import AiLatestDev
+from crew import AiLatestDev
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
@@ -66,3 +66,5 @@ def test():
 
     except Exception as e:
         raise Exception(f"An error occurred while testing the crew: {e}")
+
+run()
