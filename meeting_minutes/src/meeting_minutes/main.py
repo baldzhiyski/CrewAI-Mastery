@@ -7,6 +7,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os
 
+from crews.meeting_minutes_crew.meeting_crew import MeetingMinutesCrew
+
 
 load_dotenv()
 
@@ -35,32 +37,33 @@ class MeetingMinutesFlow(Flow[MeetingMinutesState]):
         self.state.transcript = full_transcription
 
         print("\n📝 Transcript:")
-        print(self.state.transcript[:500] + "...\n")  # Preview
+        print(self.state.transcript + "\n")
 
-    # @listen(transcribe_meeting)
-    # def generate_meeting_minutes(self):
-    #     print("🧠 Generating meeting minutes using CrewAI...")
 
-    #     crew = MeetingMinutesCrew()
+    @listen(transcribe_meeting)
+    def generate_meeting_minutes(self):
+        print("🧠 Generating meeting minutes using CrewAI...")
 
-    #     inputs = {
-    #         "transcript": self.state.transcript
-    #     }
-    #     meeting_minutes = crew.crew().kickoff(inputs)
-    #     self.state.meeting_minutes = meeting_minutes
+        crew = MeetingMinutesCrew()
 
-    #     print("\n📄 Meeting Minutes:")
-    #     print(self.state.meeting_minutes[:500] + "...\n")  # Preview
+        inputs = {
+            "transcript": self.state.transcript
+        }
+        meeting_minutes = crew.crew().kickoff(inputs)
+        self.state.meeting_minutes = meeting_minutes
 
-    # @listen(generate_meeting_minutes)
-    # def save_meeting_minutes(self):
-    #     print("💾 Saving meeting minutes to file...")
+        print("\n📄 Meeting Minutes:")
+        print(self.state.meeting_minutes[:500] + "...\n")  # Preview
 
-    #     output_path = Path(__file__).parent / "meeting_minutes.txt"
-    #     with open(output_path, "w", encoding="utf-8") as f:
-    #         f.write(self.state.meeting_minutes)
+    @listen(generate_meeting_minutes)
+    def save_meeting_minutes(self):
+        print("💾 Saving meeting minutes to file...")
 
-    #     print(f"✅ Saved to {output_path.absolute()}")
+        output_path = Path(__file__).parent / "meeting_minutes.txt"
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write(self.state.meeting_minutes)
+
+        print(f"✅ Saved to {output_path.absolute()}")
 
 
 def kickoff():

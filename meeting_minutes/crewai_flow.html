@@ -162,8 +162,8 @@
                   
 
                   // parsing and collecting nodes and edges from the python
-                  nodes = new vis.DataSet([{"color": "#FF5A50", "fixed": true, "font": {"color": "#FFFFFF", "multi": "html"}, "id": "transcribe_meeting", "label": "Transcribe Meeting", "margin": {"bottom": 8, "left": 10, "right": 10, "top": 10}, "physics": false, "shape": "box", "x": 0.0, "y": 0}]);
-                  edges = new vis.DataSet([]);
+                  nodes = new vis.DataSet([{"color": "#FF5A50", "fixed": true, "font": {"color": "#FFFFFF", "multi": "html"}, "id": "transcribe_meeting", "label": "Transcribe Meeting", "margin": {"bottom": 8, "left": 10, "right": 10, "top": 10}, "physics": false, "shape": "box", "x": 0.0, "y": 0}, {"borderWidth": 3, "borderWidthSelected": 4, "color": {"background": "#FFFFFF", "border": "#FF5A50"}, "fixed": true, "font": {"color": "#000000", "multi": "html"}, "id": "generate_meeting_minutes", "label": "Generate Meeting Minutes", "margin": {"bottom": 8, "left": 10, "right": 10, "top": 10}, "physics": false, "shape": "box", "shapeProperties": {"borderDashes": false}, "x": 0.0, "y": 150}, {"color": "#333333", "fixed": true, "font": {"color": "#FFFFFF", "multi": "html"}, "id": "save_meeting_minutes", "label": "Save Meeting Minutes", "margin": {"bottom": 8, "left": 10, "right": 10, "top": 10}, "physics": false, "shape": "box", "x": 0.0, "y": 300}]);
+                  edges = new vis.DataSet([{"arrows": "to", "color": "#666666", "dashes": false, "from": "transcribe_meeting", "smooth": {"type": "continuous"}, "to": "generate_meeting_minutes", "width": 2}, {"arrows": "to", "color": "#666666", "dashes": false, "from": "generate_meeting_minutes", "smooth": {"type": "continuous"}, "to": "save_meeting_minutes", "width": 2}]);
 
                   nodeColors = {};
                   allNodes = nodes.get({ returnType: "Object" });
