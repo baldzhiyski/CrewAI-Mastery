@@ -18,8 +18,9 @@ def run():
     Run the crew.
     """
     inputs = {
-        'topic': 'AI LLMs',
-        'current_year': str(datetime.now().year)
+        'topic': 'Machine Learning',
+        'current_year': str(datetime.now().year),
+        'date': datetime.now().strftime('%Y-%m-%d')
     }
     
     try:
