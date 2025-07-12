@@ -5,8 +5,10 @@ from pydantic import BaseModel
 
 from crewai.flow import Flow, listen, start
 
-from poem_flow.crews.poem_crew.poem_crew import PoemCrew
+from crews.poem_crew.poem_crew import PoemCrew
+from dotenv import load_dotenv
 
+load_dotenv()
 
 class PoemState(BaseModel):
     sentence_count: int = 1
