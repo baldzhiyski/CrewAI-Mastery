@@ -49,11 +49,15 @@ class MeetingMinutesFlow(Flow[MeetingMinutesState]):
         inputs = {
             "transcript": self.state.transcript
         }
-        meeting_minutes = crew.crew().kickoff(inputs)
-        self.state.meeting_minutes = meeting_minutes
+        crew_output = crew.crew().kickoff(inputs)
+
+        # Extract plain result string from CrewOutput
+        result_string = crew_output.result
+
+        self.state.meeting_minutes = result_string
 
         print("\n📄 Meeting Minutes:")
-        print(self.state.meeting_minutes[:500] + "...\n")  # Preview
+        print(result_string[:1000] + "...\n")  # Print first 1000 characters
 
     @listen(generate_meeting_minutes)
     def save_meeting_minutes(self):
