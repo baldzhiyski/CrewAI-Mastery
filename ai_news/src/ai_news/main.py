@@ -22,9 +22,27 @@ def run():
         'current_year': str(datetime.now().year),
         'date': datetime.now().strftime('%Y-%m-%d')
     }
+
+
+    
+    # inputs_array = [
+    #     {
+    #         'topic': 'ai agents',
+    #         'date': datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+    #     }, 
+    #     {
+    #         'topic': 'openai',
+    #         'date': datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+    #     },
+    #     {
+    #         'topic': 'hugging face',
+    #         'date': datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+    #     }
+    # ]
     
     try:
         AiNews().crew().kickoff(inputs=inputs)
+        # AiNews().crew().kickoff_for_each(inputs=inputs)
     except Exception as e:
         raise Exception(f"An error occurred while running the crew: {e}")
 
