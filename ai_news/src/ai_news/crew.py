@@ -1,5 +1,6 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
+from crewai.tools import SerperDevTool,FileWriterTool,ScrapeWebsiteTool
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List
 # If you want to run a snippet of code before or after the crew starts,
@@ -20,16 +21,33 @@ class AiNews():
     # If you would like to add tools to your agents, you can learn more about it here:
     # https://docs.crewai.com/concepts/agents#agent-tools
     @agent
-    def researcher(self) -> Agent:
+    def retrieve_news(self) -> Agent:
         return Agent(
-            config=self.agents_config['researcher'], # type: ignore[index]
+            config=self.agents_config['retrieve_news'],
+            tools=[SerperDevTool()],
             verbose=True
         )
 
     @agent
-    def reporting_analyst(self) -> Agent:
+    def website_scraper(self) -> Agent:
         return Agent(
-            config=self.agents_config['reporting_analyst'], # type: ignore[index]
+            config=self.agents_config['website_scraper'], 
+            tools=[ScrapeWebsiteTool()],
+            verbose=True
+        )
+    
+    @agent
+    def ai_news_writer(self) -> Agent:
+        return Agent(
+            config=self.agents_config['ai_news_writer'], 
+            verbose=True
+        )
+    
+    @agent
+    def file_writer(self) -> Agent:
+        return Agent(
+            config=self.agents_config['file_writer'],
+            tools=[FileWriterTool()],
             verbose=True
         )
 
@@ -37,17 +55,30 @@ class AiNews():
     # task dependencies, and task callbacks, check out the documentation:
     # https://docs.crewai.com/concepts/tasks#overview-of-a-task
     @task
-    def research_task(self) -> Task:
+    def retrieve_news_task(self) -> Task:
         return Task(
-            config=self.tasks_config['research_task'], # type: ignore[index]
+            config=self.tasks_config['retrieve_news_task'], # type: ignore[index]
         )
 
     @task
-    def reporting_task(self) -> Task:
+    def website_scrape_task(self) -> Task:
         return Task(
-            config=self.tasks_config['reporting_task'], # type: ignore[index]
-            output_file='report.md'
+            config=self.tasks_config['website_scrape_task'], # type: ignore[index]
         )
+    
+    @task
+    def ai_news_write_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['ai_news_write_task'], # type: ignore[index]
+        )
+
+
+    @task
+    def file_write_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['file_write_task'], # type: ignore[index]
+        )
+
 
     @crew
     def crew(self) -> Crew:
