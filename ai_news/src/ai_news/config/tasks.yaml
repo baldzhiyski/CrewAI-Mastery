@@ -2,10 +2,12 @@ retrieve_news_task:
   description: >
     Conduct a thorough research about {topic}
     Make sure you find any interesting and relevant information given
-    the current year is 2024.
+    the current year is 2025.
   expected_output: >
     The list of 10 websites with the most relevant information about {topic}
   agent: retrieve_news
+  inputs:
+    search_query: "{topic}"
 
 website_scrape_task:
   description: >

@@ -19,7 +19,6 @@ def run():
     """
     inputs = {
         'topic': 'Machine Learning',
-        'current_year': str(datetime.now().year),
         'date': datetime.now().strftime('%Y-%m-%d')
     }
 
