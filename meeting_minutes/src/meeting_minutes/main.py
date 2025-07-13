@@ -6,6 +6,7 @@ from pydub import AudioSegment
 from pathlib import Path
 from dotenv import load_dotenv
 import os
+import agentops
 
 from crews.meeting_minutes_crew.meeting_crew import MeetingMinutesCrew
 from crews.gmailcrew.gmailcrew  import GmailCrew
@@ -60,7 +61,7 @@ class MeetingMinutesFlow(Flow[MeetingMinutesState]):
         crew = GmailCrew()
 
         inputs = {
-            "body": self.state.meeting_minutes
+             "body": str(self.state.meeting_minutes.output)
         }
 
         draft_crew = crew.crew().kickoff(inputs)
@@ -68,10 +69,10 @@ class MeetingMinutesFlow(Flow[MeetingMinutesState]):
 
 
 def kickoff():
-   
+    session = agentops.init(api_key=os.getenv("AGENTOPS_API_KEY"))
     meeting_minutes_flow = MeetingMinutesFlow()
     meeting_minutes_flow.plot()
     meeting_minutes_flow.kickoff()
-
+    session.end_session()
 if __name__ == "__main__":
     kickoff()
