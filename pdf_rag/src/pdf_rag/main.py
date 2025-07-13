@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 import sys
 import warnings
-
+from dotenv import load_dotenv
 from crew import PdfRag
 
+load_dotenv()
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
 # This main file is intended to be a way for you to run your
@@ -19,7 +20,7 @@ def run():
     user_input = input("Enter your question: ")
 
     inputs = {
-        'input': user_input
+        "input": str(user_input).strip()
     }
 
     result = PdfRag().crew().kickoff(inputs=inputs)

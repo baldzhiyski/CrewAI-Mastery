@@ -2,7 +2,6 @@
 from pydantic import BaseModel
 from crewai.flow.flow import Flow, listen, start
 from faster_whisper import WhisperModel
-from pydub import AudioSegment
 from pathlib import Path
 from dotenv import load_dotenv
 import os
@@ -61,7 +60,7 @@ class MeetingMinutesFlow(Flow[MeetingMinutesState]):
         crew = GmailCrew()
 
         inputs = {
-             "body": str(self.state.meeting_minutes.output)
+            "body": str(self.state.meeting_minutes)
         }
 
         draft_crew = crew.crew().kickoff(inputs)
@@ -73,6 +72,6 @@ def kickoff():
     meeting_minutes_flow = MeetingMinutesFlow()
     meeting_minutes_flow.plot()
     meeting_minutes_flow.kickoff()
-    session.end_session()
+    session.end_trace()
 if __name__ == "__main__":
     kickoff()
